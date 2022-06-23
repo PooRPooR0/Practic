@@ -150,13 +150,13 @@ export default class Worker extends MovableObject {
         this.heardScreams = []
     }
 
-    live(foods, hive, workers, walls, ctx) {
+    live(foods, hive, workers, walls) {
         this.moveToDirection(this.moveDirection)
 
-        this.footsToFood = this.footsToFood + this.speed
-        this.footsToHive = this.footsToHive + this.speed
+        this.footsToFood = this.footsToFood + 1
+        this.footsToHive = this.footsToHive + 1
         this.moveDirection = this.moveDirection + Math.random() * 10 - 5
-        if (this.#distAfterHeardScreem > 0) this.#distAfterHeardScreem -= this.speed
+        if (this.#distAfterHeardScreem > 0) this.#distAfterHeardScreem -= 1
 
         this.collide([...foods, ...walls, hive])
         this.screaming(workers)

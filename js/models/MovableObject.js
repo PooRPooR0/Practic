@@ -4,10 +4,20 @@ export default class MovableObject extends SimulationObject {
     _speed
     _moveDirection
 
+    _timer
+
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size)
         this._speed = speed
         this._moveDirection = Math.random() * 2 * Math.PI
+    }
+
+    set timer(timer) {
+        this._timer = timer
+    }
+
+    get timer() {
+        return this._timer
     }
 
     set moveDirection(moveDirection) {
@@ -53,8 +63,7 @@ export default class MovableObject extends SimulationObject {
         const distance = this.countDistance(target_x_pos, target_y_pos)
         if (distance.line_distance === 0) return
 
-        let move_dist = this.speed
-        if (distance.line_distance < move_dist) move_dist = distance.line_distance
+        const move_dist = 1
 
         if (distance.x_dist !== 0) {
             const angle_tng = distance.y_dist / distance.x_dist    
@@ -71,8 +80,8 @@ export default class MovableObject extends SimulationObject {
     }
 
     moveToDirection(direction) {
-        const target_x = this.x_pos + this.speed * Math.cos(direction * Math.PI / 180.0)
-        const target_y = this.y_pos - this.speed * Math.sin(direction * Math.PI / 180.0)
+        const target_x = this.x_pos + Math.cos(direction * Math.PI / 180.0)
+        const target_y = this.y_pos - Math.sin(direction * Math.PI / 180.0)
         this.moveTowardsPosition(target_x, target_y)
     }
 
