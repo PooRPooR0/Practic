@@ -35,6 +35,15 @@ export default class MovableObject extends SimulationObject {
         return x_dist < object.x_size / 2 && y_dist < object.y_size / 2
     }
 
+    isPointCollideWith(point, object) {
+        if (point.x_pos < object.x_pos - object.x_size / 2) return false
+        if (point.x_pos > object.x_pos + object.x_size / 2) return false
+        if (point.y_pos < object.y_pos - object.y_size / 2) return false
+        if (point.y_pos > object.y_pos + object.y_size / 2) return false
+
+        return true
+    }
+
     countDistance(target_x_pos, target_y_pos) {
         const x_dist = target_x_pos - this.x_pos
         const y_dist = target_y_pos - this.y_pos
@@ -47,6 +56,13 @@ export default class MovableObject extends SimulationObject {
         while(normalizedAngle >= 360) normalizedAngle = normalizedAngle - 360
         while(normalizedAngle < 0) normalizedAngle = normalizedAngle + 360
         return normalizedAngle
+    }
+
+    findVector(direction, length) {
+        const x_pos = length * Math.cos(direction * Math.PI / 180.0)
+        const y_pos = length * Math.sin(direction * Math.PI / 180.0)
+
+        return {x_pos, y_pos}
     }
 
     moveTowardsPosition(target_x_pos, target_y_pos) {
@@ -71,9 +87,11 @@ export default class MovableObject extends SimulationObject {
     }
 
     moveToDirection(direction) {
-        const target_x = this.x_pos + this.speed * Math.cos(direction * Math.PI / 180.0)
-        const target_y = this.y_pos - this.speed * Math.sin(direction * Math.PI / 180.0)
-        this.moveTowardsPosition(target_x, target_y)
+        const vector = this.findVector(direction, this.speed)
+        vector.x_pos += this.x_pos
+        vector.y_pos = this.y_pos - vector.y_pos
+
+        this.moveTowardsPosition(vector.x_pos, vector.y_pos)
     }
 
     getDirectionToTarget(target) {

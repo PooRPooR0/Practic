@@ -6,7 +6,7 @@ export default class Wall extends SimulationObject {
     }
 
     drawSelf(ctx) {
-        ctx.fillStyle = 'rgb(100, 100, 100)';
+        ctx.fillStyle = 'rgb(128, 85, 40)';
         ctx.fillRect(this._x_pos - this._x_size / 2, this._y_pos - this._y_size / 2, this._x_size, this._y_size);
     }
 }

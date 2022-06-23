@@ -12,8 +12,10 @@ startButton.addEventListener("click", init)
 const pauseButton = document.getElementById("pause_button")
 pauseButton.addEventListener("click", pause)
 
-const foods = [
-    new Food(750, 500, 30, 30, 100),
+let foods = [
+    new Food(750, 500, 30, 30, 1500),
+    new Food(450, 200, 30, 30, 1000),
+    new Food(150, 500, 30, 30, 500),
 ]
 const hive = new Hive(150, 100, 20, 20)
 const walls = [
@@ -36,13 +38,18 @@ function pause() {
 }
 
 function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgb(184, 142, 70)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     hive.live(workers);
-    workers.map(worker => worker.live(foods, hive, workers, walls, ctx))
+    workers.map(worker => worker.live(foods, hive, workers, walls))
+    foods.map(food => food.live())
+
+    foods = foods.filter(food => food.amount > 0)
 
     foods.map(food => food.drawSelf(ctx))
-    hive.drawSelf(ctx)
+    hive.drawSelf(ctx, workers.length)
     walls.map(wall => wall.drawSelf(ctx))
-    workers.map(bee => bee.drawSelf(ctx))
+    workers.map(worker => worker.drawSelf(ctx))
 }

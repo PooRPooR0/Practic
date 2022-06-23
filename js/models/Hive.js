@@ -6,7 +6,7 @@ export default class Hive extends SimulationObject {
 
     constructor(x_pos, y_pos, x_size, y_size) {
         super(x_pos, y_pos, x_size, y_size)
-        this.#food = 10000
+        this.#food = 5000
     }
 
     set food(food) {
@@ -17,9 +17,18 @@ export default class Hive extends SimulationObject {
         return this.#food
     }
 
-    drawSelf(ctx) {
-        ctx.fillStyle = 'rgb(0, 0, 255)';
-        ctx.fillRect(this._x_pos - this._x_size / 2, this._y_pos - this._y_size / 2, this._x_size, this._y_size);
+    drawSelf(ctx, workersCount) {
+        ctx.fillStyle = 'rgb(0, 0, 255)'
+        ctx.fillRect(
+            this.x_pos - this.x_size / 2,
+            this.y_pos - this.y_size / 2,
+            this.x_size,
+            this.y_size)
+
+        ctx.font = '20px serif'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = 'rgb(255, 255, 255)'
+        ctx.fillText(workersCount, this.x_pos, this.y_pos - this.y_size)
     }
 
     createWorker(workers) {
