@@ -6,7 +6,7 @@ export default class Hive extends SimulationObject {
 
     constructor(x_pos, y_pos, x_size, y_size) {
         super(x_pos, y_pos, x_size, y_size)
-        this.#food = 7000
+        this.#food = 5000
     }
 
     set food(food) {
@@ -23,7 +23,7 @@ export default class Hive extends SimulationObject {
     }
 
     createWorker(workers) {
-        workers.push(new Worker(this.x_pos, this.y_pos, 5, 5, Math.random() * 2 + 1, 50))
+        workers.push(new Worker(this.x_pos, this.y_pos, Math.random() * 2 + 1, 50))
     }
 
     live(workers) {

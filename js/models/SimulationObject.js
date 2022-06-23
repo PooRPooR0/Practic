@@ -53,4 +53,19 @@ export default class SimulationObject {
         ctx.fillStyle = 'rgb(255, 0, 0)';
         ctx.fillRect(this._x_pos - this._x_size / 2, this._y_pos - this._y_size / 2, this._x_size, this._y_size);
     }
+
+    countDistance(target_x_pos, target_y_pos) {
+        const x_dist = target_x_pos - this.x_pos
+        const y_dist = target_y_pos - this.y_pos
+        const line_distance = Math.sqrt(x_dist*x_dist + y_dist*y_dist)
+        return {x_dist, y_dist, line_distance}
+    }
+
+    collideWith(object) {
+        const distance = this.countDistance(object.x_pos, object.y_pos)
+        const x_dist = Math.abs(distance.x_dist)
+        const y_dist = Math.abs(distance.y_dist)
+
+        return x_dist < object.x_size / 2 && y_dist < object.y_size / 2
+    }
 }
