@@ -4,21 +4,30 @@ import Food from "./Food.js"
 import Wall from "./Wall.js"
 
 export default class Worker extends MovableObject {
-    #screemRadius
+    #distortionAngle = 10
+    #screemRadius = 40
+
     #footsToFood
     #footsToHive
     #isMovedToHive
     #heardScreams = []
     #distAfterHeardScreem
 
-    constructor(x_pos, y_pos, x_size, y_size, speed, screemRadius) {
+    constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size, speed)
         this.#footsToFood = 0
         this.#footsToHive = 0
         this.#isMovedToHive = false
-        this.#screemRadius = screemRadius
         this.#heardScreams = []
         this.#distAfterHeardScreem = 0
+    }
+
+    set distortionAngle(distortionAngle) {
+        this.#distortionAngle = Math.abs(distortionAngle)
+    }
+
+    get distortionAngle() {
+        return this.#distortionAngle
     }
 
     set screemRadius(screemRadius) {
@@ -180,7 +189,7 @@ export default class Worker extends MovableObject {
         this.moveToDirection(this.moveDirection)
         this.footsToFood = this.footsToFood + this.speed
         this.footsToHive = this.footsToHive + this.speed
-        this.moveDirection = this.moveDirection + Math.random() * 10 - 5
+        this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
         if (this.#distAfterHeardScreem > 0) this.#distAfterHeardScreem -= this.speed
         this.collide([...foods, ...walls, hive])
         this.screaming(workers)

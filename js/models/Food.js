@@ -5,8 +5,8 @@ export default class Food extends SimulationObject {
     #amount
     #max_size_x
     #max_size_y
-    #min_size_x = 5
-    #min_size_y = 5
+    #min_size_x = 10
+    #min_size_y = 10
 
     constructor(x_pos, y_pos, x_size, y_size, amount) {
         super(x_pos, y_pos, x_size, y_size)

@@ -6,7 +6,7 @@ export default class SimulationObject {
     _y_size
 
     constructor(x_pos, y_pos, x_size, y_size) {
-        this._id = Math.random()*1000000;
+        this._id = Math.ceil(Math.random()*100000000);
         this._x_pos = x_pos
         this._y_pos = y_pos
         this._x_size = x_size

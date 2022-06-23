@@ -32,7 +32,7 @@ export default class Hive extends SimulationObject {
     }
 
     createWorker(workers) {
-        workers.push(new Worker(this.x_pos, this.y_pos, 2, 2, Math.random() * 2 + 1, 38))
+        workers.push(new Worker(this.x_pos, this.y_pos, 2, 2, Math.random() * 2 + 1))
     }
 
     live(workers) {
