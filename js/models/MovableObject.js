@@ -7,12 +7,12 @@ export default class MovableObject extends SimulationObject {
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size)
         this._speed = speed
-        this._moveDirection = Math.random() * 360
+        this._moveDirection = Math.random() * 2 * Math.PI
     }
 
     set moveDirection(moveDirection) {
-        this._moveDirection = moveDirection * Math.PI / 180.0
-        
+        const normalizedAngle = this.normalizeAngle(moveDirection)
+        this._moveDirection = normalizedAngle * Math.PI / 180.0
     }
 
     get moveDirection() {
@@ -27,11 +27,26 @@ export default class MovableObject extends SimulationObject {
         return this._speed
     }
 
+    isCollideWith(object) {
+        const distance = this.countDistance(object.x_pos, object.y_pos)
+        const x_dist = Math.abs(distance.x_dist)
+        const y_dist = Math.abs(distance.y_dist)
+
+        return x_dist < object.x_size / 2 && y_dist < object.y_size / 2
+    }
+
     countDistance(target_x_pos, target_y_pos) {
         const x_dist = target_x_pos - this.x_pos
         const y_dist = target_y_pos - this.y_pos
         const line_distance = Math.sqrt(x_dist*x_dist + y_dist*y_dist)
         return {x_dist, y_dist, line_distance}
+    }
+
+    normalizeAngle(angle) {
+        let normalizedAngle = angle
+        while(normalizedAngle >= 360) normalizedAngle = normalizedAngle - 360
+        while(normalizedAngle < 0) normalizedAngle = normalizedAngle + 360
+        return normalizedAngle
     }
 
     moveTowardsPosition(target_x_pos, target_y_pos) {
@@ -56,13 +71,13 @@ export default class MovableObject extends SimulationObject {
     }
 
     moveToDirection(direction) {
-        const target_x = this.x_pos + this.speed * Math.cos(direction)
-        const target_y = this.y_pos - this.speed * Math.sin(direction)
+        const target_x = this.x_pos + this.speed * Math.cos(direction * Math.PI / 180.0)
+        const target_y = this.y_pos - this.speed * Math.sin(direction * Math.PI / 180.0)
         this.moveTowardsPosition(target_x, target_y)
     }
 
-    setDirectionToTarget(target) {
+    getDirectionToTarget(target) {
         const distance = this.countDistance(target.x_pos, target.y_pos)
-        this.moveDirection = -Math.acos(distance.x_dist / distance.line_distance) * Math.sign(distance.y_dist)
+        return -Math.acos(distance.x_dist / distance.line_distance) * Math.sign(distance.y_dist) * 180 / Math.PI
     }
 }

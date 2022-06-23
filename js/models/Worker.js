@@ -75,11 +75,8 @@ export default class Worker extends MovableObject {
 
     collide(objects) {
         for(let obj of objects) {
-            const distance = this.countDistance(obj.x_pos, obj.y_pos)
-            const x_dist = Math.abs(distance.x_dist)
-            const y_dist = Math.abs(distance.y_dist)
-
-            if(x_dist > obj.x_size / 2 || y_dist > obj.y_size / 2) continue
+            
+            if(!this.isCollideWith(obj)) continue
             
             if (obj instanceof Hive) {
                 this.footsToHive = 0
@@ -138,14 +135,14 @@ export default class Worker extends MovableObject {
                 this.footsToFood = scream.dist
                     
                 if (this.isMovedToHive) continue
-                this.setDirectionToTarget(scream.worker)
+                this.moveDirection = this.getDirectionToTarget(scream.worker)
                 this.#distAfterHeardScreem = this.#screemRadius
             }else {
                 if (scream.dist >= this.footsToHive) continue
                 this.footsToHive = scream.dist
                 
                 if (!this.isMovedToHive) continue
-                this.setDirectionToTarget(scream.worker)
+                this.moveDirection = this.getDirectionToTarget(scream.worker)
                 this.#distAfterHeardScreem = this.#screemRadius
             }
         }
@@ -158,7 +155,7 @@ export default class Worker extends MovableObject {
 
         this.footsToFood = this.footsToFood + this.speed
         this.footsToHive = this.footsToHive + this.speed
-        this.moveDirection = this.moveDirection + Math.random() * 0.2 - 0.1
+        this.moveDirection = this.moveDirection + Math.random() * 10 - 5
         if (this.#distAfterHeardScreem > 0) this.#distAfterHeardScreem -= this.speed
 
         this.collide([...foods, ...walls, hive])
