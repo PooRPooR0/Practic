@@ -4,13 +4,25 @@ import Wall from "./models/Wall.js"
 
 const canvas = document.getElementById("field")
 const ctx = canvas.getContext('2d')
-let timer
-
 const startButton = document.getElementById("start_button")
-startButton.addEventListener("click", init)
-
 const pauseButton = document.getElementById("pause_button")
+const drawRadiusRange = document.getElementById("draw_radius_range")
+
+canvas.addEventListener("mousedown", (e) => {
+    walls.push(new Wall(
+        e.pageX - canvas.offsetLeft,
+        e.pageY - canvas.offsetTop,
+        drawRadiusRange.value,
+        drawRadiusRange.value
+        ))
+        draw()
+})
+
+
+startButton.addEventListener("click", init)
 pauseButton.addEventListener("click", pause)
+
+let timer
 
 let foods = [
     new Food(750, 500, 30, 30, 1500),
@@ -24,8 +36,8 @@ const walls = [
     new Wall(canvas.width / 2, canvas.height - 20, canvas.width, 40),
     new Wall(20, canvas.height / 2, 40, canvas.height),
     new Wall(canvas.width - 20, canvas.height / 2, 40, canvas.height),
-    new Wall(canvas.width / 3, canvas.height / 2 - 100, 40, canvas.height-100),
-    new Wall(canvas.width / 3 * 2, canvas.height / 2 + 100, 40, canvas.height-100),
+    new Wall(canvas.width / 3, canvas.height / 2 - 100, 10, canvas.height-100),
+    new Wall(canvas.width / 3 * 2, canvas.height / 2 + 100, 10, canvas.height-100),
 ]
 
 const workers = []
@@ -36,6 +48,13 @@ function init() {
 
 function pause() {
     clearInterval(timer)
+}
+
+function draw() {
+    foods.map(food => food.drawSelf(ctx))
+    hive.drawSelf(ctx, workers.length)
+    walls.map(wall => wall.drawSelf(ctx))
+    workers.map(worker => worker.drawSelf(ctx))
 }
 
 function update() {
@@ -49,8 +68,5 @@ function update() {
 
     foods = foods.filter(food => food.amount > 0)
 
-    foods.map(food => food.drawSelf(ctx))
-    hive.drawSelf(ctx, workers.length)
-    walls.map(wall => wall.drawSelf(ctx))
-    workers.map(worker => worker.drawSelf(ctx))
+    draw()
 }

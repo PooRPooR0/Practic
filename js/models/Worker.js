@@ -132,6 +132,7 @@ export default class Worker extends MovableObject {
                 }
 
                 this.moveDirection = this.getDirectionToTarget(newTarget)
+                this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
                 this.moveToDirection(this.moveDirection)
             }
 
