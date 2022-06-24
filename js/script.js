@@ -14,8 +14,9 @@ pauseButton.addEventListener("click", pause)
 
 let foods = [
     new Food(750, 500, 30, 30, 1500),
-    new Food(450, 200, 30, 30, 1000),
+    new Food(400, 500, 30, 30, 1000),
     new Food(150, 500, 30, 30, 500),
+    new Food(520, 200, 30, 30, 500),
 ]
 const hive = new Hive(150, 100, 20, 20)
 const walls = [

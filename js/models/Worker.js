@@ -4,14 +4,14 @@ import Food from "./Food.js"
 import Wall from "./Wall.js"
 
 export default class Worker extends MovableObject {
-    #distortionAngle = 10
+    #distortionAngle = 20
     #screemRadius = 40
+    #heardReactionAngle = 120
 
     #footsToFood
     #footsToHive
     #isMovedToHive
     #heardScreams = []
-    #distAfterHeardScreem
 
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size, speed)
@@ -19,7 +19,6 @@ export default class Worker extends MovableObject {
         this.#footsToHive = 0
         this.#isMovedToHive = false
         this.#heardScreams = []
-        this.#distAfterHeardScreem = 0
     }
 
     set distortionAngle(distortionAngle) {
@@ -159,26 +158,25 @@ export default class Worker extends MovableObject {
     }
 
     heard() {
-        if (this.#distAfterHeardScreem > 0) {
-            this.heardScreams = []
-            return
-        }
 
         for (let scream of this.heardScreams) {
+            let angleToScreem = this.getDirectionToTarget(scream.worker) - this.moveDirection
+            if (angleToScreem < -180) angleToScreem += 360
+            if (angleToScreem > 180) angleToScreem -= 360 
+            if (Math.abs(angleToScreem) > this.#heardReactionAngle / 2) continue
+
             if(scream.isHeMovedToHive) {
                 if (scream.dist >= this.footsToFood) continue
                 this.footsToFood = scream.dist
                     
                 if (this.isMovedToHive) continue
                 this.moveDirection = this.getDirectionToTarget(scream.worker)
-                this.#distAfterHeardScreem = this.#screemRadius * 1.5
             }else {
                 if (scream.dist >= this.footsToHive) continue
                 this.footsToHive = scream.dist
                 
                 if (!this.isMovedToHive) continue
                 this.moveDirection = this.getDirectionToTarget(scream.worker)
-                this.#distAfterHeardScreem = this.#screemRadius * 1.5
             }
         }
 
@@ -186,11 +184,12 @@ export default class Worker extends MovableObject {
     }
 
     live(foods, hive, workers, walls) {
+        this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
         this.moveToDirection(this.moveDirection)
+
         this.footsToFood = this.footsToFood + this.speed
         this.footsToHive = this.footsToHive + this.speed
-        this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
-        if (this.#distAfterHeardScreem > 0) this.#distAfterHeardScreem -= this.speed
+
         this.collide([...foods, ...walls, hive])
         this.screaming(workers)
         this.heard()
