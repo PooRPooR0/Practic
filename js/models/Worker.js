@@ -6,7 +6,6 @@ import Wall from "./Wall.js"
 export default class Worker extends MovableObject {
     #distortionAngle = 20
     #screemRadius = 40
-    #heardReactionAngle = 120
 
     #footsToFood
     #footsToHive
@@ -159,19 +158,13 @@ export default class Worker extends MovableObject {
     }
 
     heard() {
-
         for (let scream of this.heardScreams) {
-            let angleToScreem = this.getDirectionToTarget(scream.worker) - this.moveDirection
-            if (angleToScreem < -180) angleToScreem += 360
-            if (angleToScreem > 180) angleToScreem -= 360 
-            if (Math.abs(angleToScreem) > this.#heardReactionAngle / 2) continue
-
             if(scream.isHeMovedToHive) {
                 if (scream.dist >= this.footsToFood) continue
                 this.footsToFood = scream.dist
-                    
+                
                 if (this.isMovedToHive) continue
-                this.moveDirection = this.getDirectionToTarget(scream.worker)
+                this.moveDirection = this.getDirectionToTarget(scream.worker)         
             }else {
                 if (scream.dist >= this.footsToHive) continue
                 this.footsToHive = scream.dist
@@ -188,8 +181,8 @@ export default class Worker extends MovableObject {
         this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
         this.moveToDirection(this.moveDirection)
 
-        this.footsToFood = this.footsToFood + this.speed
-        this.footsToHive = this.footsToHive + this.speed
+        this.footsToFood = this.footsToFood + 1
+        this.footsToHive = this.footsToHive + 1
 
         this.collide([...foods, ...walls, hive])
         this.screaming(workers)

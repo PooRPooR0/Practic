@@ -36,11 +36,13 @@ const walls = [
     new Wall(canvas.width / 2, canvas.height - 20, canvas.width, 40),
     new Wall(20, canvas.height / 2, 40, canvas.height),
     new Wall(canvas.width - 20, canvas.height / 2, 40, canvas.height),
-    new Wall(canvas.width / 3, canvas.height / 2 - 100, 10, canvas.height-100),
-    new Wall(canvas.width / 3 * 2, canvas.height / 2 + 100, 10, canvas.height-100),
+    new Wall(canvas.width / 3, canvas.height / 2 - 100, 50, canvas.height-100),
+    new Wall(canvas.width / 3 * 2, canvas.height / 2 + 100, 50, canvas.height-100),
 ]
 
 const workers = []
+
+draw()
 
 function init() {
     timer = setInterval(update, 50)
@@ -51,6 +53,11 @@ function pause() {
 }
 
 function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    ctx.fillStyle = 'rgb(184, 142, 70)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
     foods.map(food => food.drawSelf(ctx))
     hive.drawSelf(ctx, workers.length)
     walls.map(wall => wall.drawSelf(ctx))
@@ -58,10 +65,6 @@ function draw() {
 }
 
 function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = 'rgb(184, 142, 70)'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
     hive.live(workers);
     workers.map(worker => worker.live(foods, hive, workers, walls))
     foods.map(food => food.live())
