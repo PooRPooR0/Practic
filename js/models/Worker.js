@@ -14,6 +14,7 @@ export default class Worker extends MovableObject {
 
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size, speed)
+        
         this.#footsToFood = 0
         this.#footsToHive = 0
         this.#isMovedToHive = false
@@ -87,8 +88,8 @@ export default class Worker extends MovableObject {
             if (obj instanceof Hive) {
                 this.footsToHive = 0
                 if (this.isMovedToHive) {
-                    this.moveDirection = this.moveDirection + 180
-                    this.moveToDirection(this.moveDirection)
+                    this.movementDirection = this.movementDirection + 180
+                    this.moveToDirection(this.movementDirection)
                     this.isMovedToHive = false
                     obj.food = obj.food + 1
                 }
@@ -97,8 +98,8 @@ export default class Worker extends MovableObject {
             if (obj instanceof Food) {
                 this.footsToFood = 0
                 if (!this.isMovedToHive) {
-                    this.moveDirection = this.moveDirection + 180
-                    this.moveToDirection(this.moveDirection)
+                    this.movementDirection = this.movementDirection + 180
+                    this.moveToDirection(this.movementDirection)
                     this.isMovedToHive = true
                     obj.amount = obj.amount - 1
                 }
@@ -110,7 +111,7 @@ export default class Worker extends MovableObject {
                 const leftPoint = {x_pos: this.x_pos - 2 * this.x_size, y_pos: this.y_pos}
                 const rightPoint = {x_pos: this.x_pos + 2 * this.x_size, y_pos: this.y_pos}
 
-                const vector = this.findVector(this.moveDirection, 1)
+                const vector = this.findVector(this.movementDirection, 1)
 
                 if(this.isPointCollideWith(topPoint, obj)) {
                     vector.y_pos = -vector.y_pos
@@ -130,9 +131,9 @@ export default class Worker extends MovableObject {
                     y_pos: this.y_pos - vector.y_pos,
                 }
 
-                this.moveDirection = this.getDirectionToTarget(newTarget)
-                this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
-                this.moveToDirection(this.moveDirection)
+                this.movementDirection = this.getDirectionToTarget(newTarget)
+                this.movementDirection = this.movementDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
+                this.moveToDirection(this.movementDirection)
             }
 
             break
@@ -164,13 +165,13 @@ export default class Worker extends MovableObject {
                 this.footsToFood = scream.dist
                 
                 if (this.isMovedToHive) continue
-                this.moveDirection = this.getDirectionToTarget(scream.worker)         
+                this.movementDirection = this.getDirectionToTarget(scream.worker)         
             }else {
                 if (scream.dist >= this.footsToHive) continue
                 this.footsToHive = scream.dist
                 
                 if (!this.isMovedToHive) continue
-                this.moveDirection = this.getDirectionToTarget(scream.worker)
+                this.movementDirection = this.getDirectionToTarget(scream.worker)
             }
         }
 
@@ -178,8 +179,8 @@ export default class Worker extends MovableObject {
     }
 
     live(foods, hive, workers, walls) {
-        this.moveDirection = this.moveDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
-        this.moveToDirection(this.moveDirection)
+        this.movementDirection = this.movementDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
+        this.moveToDirection(this.movementDirection)
 
         this.footsToFood = this.footsToFood + 1
         this.footsToHive = this.footsToHive + 1

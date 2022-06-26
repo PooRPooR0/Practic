@@ -50,7 +50,12 @@ export default class SimulationObject {
     }
 
     drawSelf(ctx) {
-        ctx.fillStyle = 'rgb(255, 0, 0)';
-        ctx.fillRect(this._x_pos - this._x_size / 2, this._y_pos - this._y_size / 2, this._x_size, this._y_size);
+        ctx.fillStyle = 'rgb(255, 0, 0)'
+        ctx.fillRect(
+            this._x_pos - this._x_size / 2,
+            this._y_pos - this._y_size / 2,
+            this._x_size,
+            this._y_size
+        )
     }
 }
