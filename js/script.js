@@ -1,6 +1,7 @@
 import Food from "./models/Food.js"
 import Hive from "./models/Hive.js"
 import Wall from "./models/Wall.js"
+import Slowground from "./models/SlowGround.js"
 
 const canvas = document.getElementById("field")
 const ctx = canvas.getContext('2d')
@@ -39,6 +40,9 @@ const walls = [
     new Wall(canvas.width / 3, canvas.height / 2 - 100, 50, canvas.height-100),
     new Wall(canvas.width / 3 * 2, canvas.height / 2 + 100, 50, canvas.height-100),
 ]
+const slowgrounds = [
+    new Slowground(190, 300, 170, 60, 0.3),
+]
 
 const workers = []
 
@@ -58,6 +62,7 @@ function draw() {
     ctx.fillStyle = 'rgb(184, 142, 70)'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
+    slowgrounds.map(slowground => slowground.drawSelf(ctx))
     foods.map(food => food.drawSelf(ctx))
     hive.drawSelf(ctx, workers.length)
     walls.map(wall => wall.drawSelf(ctx))
@@ -66,7 +71,7 @@ function draw() {
 
 function update() {
     hive.live(workers);
-    workers.map(worker => worker.live(foods, hive, workers, walls))
+    workers.map(worker => worker.live(foods, hive, workers, walls, slowgrounds))
     foods.map(food => food.live())
 
     foods = foods.filter(food => food.amount > 0)

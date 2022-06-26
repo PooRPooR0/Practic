@@ -2,6 +2,7 @@ import MovableObject from "./MovableObject.js"
 import Hive from "./Hive.js"
 import Food from "./Food.js"
 import Wall from "./Wall.js"
+import Slowground from "./SlowGround.js"
 
 export default class Worker extends MovableObject {
     #distortionAngle = 20
@@ -105,6 +106,10 @@ export default class Worker extends MovableObject {
                 }
             }
 
+            if (obj instanceof Slowground) {
+                this.speedMultiplier = obj.slowMultiplier
+            }
+
             if (obj instanceof Wall) {    
                 const topPoint = {x_pos: this.x_pos, y_pos: this.y_pos - 2 * this.y_size}
                 const bottomPoint = {x_pos: this.x_pos, y_pos: this.y_pos + 2 * this.y_size}
@@ -178,14 +183,16 @@ export default class Worker extends MovableObject {
         this.heardScreams = []
     }
 
-    live(foods, hive, workers, walls) {
+    live(foods, hive, workers, walls, slowgrounds) {
+        this.speedMultiplier = this.normalSpeedMultiplier
+        this.collide([...foods, ...walls, hive, ...slowgrounds])
+
         this.movementDirection = this.movementDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
         this.moveToDirection(this.movementDirection)
 
         this.footsToFood = this.footsToFood + 1
         this.footsToHive = this.footsToHive + 1
 
-        this.collide([...foods, ...walls, hive])
         this.screaming(workers)
         this.heard()
     }

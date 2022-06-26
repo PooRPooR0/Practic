@@ -2,12 +2,15 @@ import SimulationObject from "./SimulationObject.js"
 
 export default class MovableObject extends SimulationObject {
     _speed
+    _speedMultiplier
+    _normalSpeedMultiplier = 1
     _movementDirection
 
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size)
         this._speed = speed
         this._movementDirection = Math.random() * 2 * Math.PI
+        this._speedMultiplier = this._normalSpeedMultiplier
     }
 
     set movementDirection(movementDirection) {
@@ -25,6 +28,18 @@ export default class MovableObject extends SimulationObject {
 
     get speed() {
         return this._speed
+    }
+
+    set speedMultiplier(speedMultiplier) {
+        this._speedMultiplier = speedMultiplier
+    }
+
+    get speedMultiplier() {
+        return this._speedMultiplier
+    }
+
+    get normalSpeedMultiplier() {
+        return this._normalSpeedMultiplier
     }
 
     isCollideWith(object) {
@@ -69,7 +84,7 @@ export default class MovableObject extends SimulationObject {
         const distance = this.countDistance(target_x_pos, target_y_pos)
         if (distance.line_distance === 0) return
 
-        let move_dist = this.speed
+        let move_dist = this.speed * this.speedMultiplier
         if (distance.line_distance < move_dist) move_dist = distance.line_distance
 
         if (distance.x_dist !== 0) {
