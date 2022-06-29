@@ -156,9 +156,9 @@ export default class Worker extends MovableObject {
             else footsToScream = this.footsToHive + this.screemRadius
 
             otherWorker.heardScreams = [...otherWorker.heardScreams, {
-                "dist": footsToScream,
-                "isHeMovedToHive": this.isMovedToHive,
-                "worker": this
+                foots: footsToScream,
+                isHeMovedToHive: this.isMovedToHive,
+                worker: this
             }]
         }
     }
@@ -166,14 +166,14 @@ export default class Worker extends MovableObject {
     heard() {
         for (let scream of this.heardScreams) {
             if(scream.isHeMovedToHive) {
-                if (scream.dist >= this.footsToFood) continue
-                this.footsToFood = scream.dist
+                if (scream.foots >= this.footsToFood) continue
+                this.footsToFood = scream.foots
                 
                 if (this.isMovedToHive) continue
                 this.movementDirection = this.getDirectionToTarget(scream.worker)         
             }else {
-                if (scream.dist >= this.footsToHive) continue
-                this.footsToHive = scream.dist
+                if (scream.foots >= this.footsToHive) continue
+                this.footsToHive = scream.foots
                 
                 if (!this.isMovedToHive) continue
                 this.movementDirection = this.getDirectionToTarget(scream.worker)
@@ -187,11 +187,11 @@ export default class Worker extends MovableObject {
         this.speedMultiplier = this.normalSpeedMultiplier
         this.collide([...foods, ...walls, hive, ...slowgrounds])
 
-        this.movementDirection = this.movementDirection + Math.random() * this.#distortionAngle - this.#distortionAngle / 2
+        this.movementDirection += Math.random() * this.#distortionAngle - this.#distortionAngle / 2
         this.moveToDirection(this.movementDirection)
 
-        this.footsToFood = this.footsToFood + 1
-        this.footsToHive = this.footsToHive + 1
+        this.footsToFood += 1
+        this.footsToHive += 1
 
         this.screaming(workers)
         this.heard()

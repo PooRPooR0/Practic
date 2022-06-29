@@ -3,23 +3,15 @@ import SimulationObject from "./SimulationObject.js"
 export default class MovableObject extends SimulationObject {
     _speed
     _speedMultiplier
-    _normalSpeedMultiplier = 1
     _movementDirection
+
+    _normalSpeedMultiplier = 1
 
     constructor(x_pos, y_pos, x_size, y_size, speed) {
         super(x_pos, y_pos, x_size, y_size)
         this._speed = speed
         this._movementDirection = Math.random() * 2 * Math.PI
         this._speedMultiplier = this._normalSpeedMultiplier
-    }
-
-    set movementDirection(movementDirection) {
-        const normalizedAngle = this.normalizeAngle(movementDirection)
-        this._movementDirection = normalizedAngle * Math.PI / 180.0
-    }
-
-    get movementDirection() {
-        return this._movementDirection * 180 / Math.PI
     }
 
     set speed(speed) {
@@ -36,6 +28,15 @@ export default class MovableObject extends SimulationObject {
 
     get speedMultiplier() {
         return this._speedMultiplier
+    }
+
+    set movementDirection(movementDirection) {
+        const normalizedAngle = this.normalizeAngle(movementDirection)
+        this._movementDirection = normalizedAngle * Math.PI / 180.0
+    }
+
+    get movementDirection() {
+        return this._movementDirection * 180 / Math.PI
     }
 
     get normalSpeedMultiplier() {

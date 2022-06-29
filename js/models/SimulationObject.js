@@ -6,7 +6,7 @@ export default class SimulationObject {
     _y_size
 
     constructor(x_pos, y_pos, x_size, y_size) {
-        this._id = Math.ceil(Math.random()*100000000);
+        this._id = Math.floor(Math.random()*100000000);
         this._x_pos = x_pos
         this._y_pos = y_pos
         this._x_size = x_size
@@ -50,12 +50,12 @@ export default class SimulationObject {
     }
 
     drawSelf(ctx) {
-        ctx.fillStyle = 'rgb(255, 0, 0)'
+        ctx.fillStyle = 'rgb(0, 0, 0)'
         ctx.fillRect(
-            this._x_pos - this._x_size / 2,
-            this._y_pos - this._y_size / 2,
-            this._x_size,
-            this._y_size
+            this.x_pos - this.x_size / 2,
+            this.y_pos - this.y_size / 2,
+            this.x_size,
+            this.y_size
         )
     }
 }

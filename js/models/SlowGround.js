@@ -19,10 +19,10 @@ export default class Slowground extends SimulationObject {
     drawSelf(ctx) {
         ctx.fillStyle = 'rgb(131, 178, 204)'
         ctx.fillRect(
-            this._x_pos - this._x_size / 2,
-            this._y_pos - this._y_size / 2,
-            this._x_size,
-            this._y_size
+            this.x_pos - this.x_size / 2,
+            this.y_pos - this.y_size / 2,
+            this.x_size,
+            this.y_size
         )
     }
 }

@@ -3,6 +3,7 @@ import SimulationObject from "./SimulationObject.js";
 export default class Food extends SimulationObject {
     #start_amount
     #amount
+    
     #max_size_x
     #max_size_y
     #min_size_x = 10
@@ -22,6 +23,16 @@ export default class Food extends SimulationObject {
 
     get amount() {
         return this.#amount
+    }
+
+    drawSelf(ctx) {
+        ctx.fillStyle = 'rgb(225, 0, 0)'
+        ctx.fillRect(
+            this.x_pos - this.x_size / 2,
+            this.y_pos - this.y_size / 2,
+            this.x_size,
+            this.y_size
+        )
     }
 
     live() {
