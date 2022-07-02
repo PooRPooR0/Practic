@@ -7,18 +7,6 @@ const canvas = document.getElementById("field")
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById("start_button")
 const pauseButton = document.getElementById("pause_button")
-const drawRadiusRange = document.getElementById("draw_radius_range")
-
-canvas.addEventListener("mousedown", (e) => {
-    walls.push(new Wall(
-        e.pageX - canvas.offsetLeft,
-        e.pageY - canvas.offsetTop,
-        drawRadiusRange.value,
-        drawRadiusRange.value
-        ))
-        draw()
-})
-
 
 startButton.addEventListener("click", init)
 pauseButton.addEventListener("click", pause)
