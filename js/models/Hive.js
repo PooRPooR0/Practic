@@ -4,6 +4,8 @@ import Worker from "./Worker.js";
 export default class Hive extends SimulationObject {
     #food
 
+    #workerCost = 10
+
     constructor(x_pos, y_pos, x_size, y_size) {
         super(x_pos, y_pos, x_size, y_size)
         this.#food = 5000
@@ -36,9 +38,9 @@ export default class Hive extends SimulationObject {
     }
 
     live(workers) {
-        if (this.food >= 10) {
+        if (this.food >= this.#workerCost) {
             this.createWorker(workers)
-            this.food = this.food - 10
+            this.food = this.food - this.#workerCost
         }
     }
 }
